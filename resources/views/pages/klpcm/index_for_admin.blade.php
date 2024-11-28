@@ -4,17 +4,16 @@
     <div class="container mx-auto p-4">
         <x-alert />
         <div class="container overflow-x-auto">
-            <table class="w-full border-collapse border rounded-md shadow-md mt-2">
+            <table class="w-full border-collapse border rounded-md shadow-md">
                 <thead>
                     <tr class="bg-gray-600 text-left font-medium text-white">
                         <th class="px-4 py-2">No</th>
+                        <th class="px-4 py-2">Tanggal Kunjungan</th>
                         <th class="px-4 py-2">No RM</th>
                         <th class="px-4 py-2">Kode Wilayah</th>
                         <th class="px-4 py-2">Nama</th>
-                        <th class="px-4 py-2">Keperluan</th>
-                        <th class="px-4 py-2">Poli</th>
-                        <th class="px-4 py-2">Tanggal Pinjam</th>
-                        <th class="px-4 py-2">Tanggal Kembali</th>
+                        <th class="px-4 py-2">Status Kelengkapan</th>
+                        <th class="px-4 py-2">Status Kembali</th>
                         <th class="px-4 py-2">Aksi</th>
                     </tr>
                 </thead>
@@ -22,26 +21,26 @@
                     @foreach ($klpcms as $item)
                         <tr class="hover:bg-gray-100">
                             <td class="px-4 py-2">{{ $loop->iteration }}</td>
-                            <td class="px-4 py-2">{{ $item->no_rm }}</td>
-                            <td class="px-4 py-2">{{ optional($item->detail->first())->kode_wilayah }}</td>
-                            <td class="px-4 py-2">{{ optional($item->detail->first())->nama_string }}</td>
-                            <td class="px-4 py-2">{{ optional($item->detail->first())->keperluan }}</td>
-                            <td class="px-4 py-2">{{ optional($item->detail->first())->poli }}</td>
-                            <td class="px-4 py-2">{{ optional($item->detail->first())->tanggal_pinjam }}</td>
+                            <td class="px-4 py-2">{{ \Carbon\Carbon::parse($item->created_at)->format('d-m-Y') }}</td>
+                            <td class="px-4 py-2">{{ $item->klpcm->no_rm }}</td>
+                            <td class="px-4 py-2">{{ $item->kode_wilayah }}</td>
+                            <td class="px-4 py-2">{{ $item->nama_string }}</td>
+                            <td class="px-4 py-2">{{ $item->status_lengkap }}</td>
+                            <td class="px-4 py-2">{{ $item->status_kembali }}</td>
+                            <td class="px-4 py-2 flex gap-2">
+                                <!-- Konfirmasi Button -->
+                                <a href="{{ route('distribusi.show', ['distribusi' => $item->id]) }}"><i
+                                        class="fas fa-eye mr-2"></i></a>
 
-                            <td class="px-4 py-2">{{ optional($item->detail->first())->tanggal_kembali }}</td>
-                            <td class="space-x-2 flex">
-                                <a href="{{ route('distribusi.edit', ['distribusi' => $item->id]) }}"><i
-                                        class="fas fa-edit mr-2"></i></a>
-                                <form action="{{ route('rekam-medis.destroy', ['rekam_medi' => $item]) }}"
-                                    class="inline-block" method="post">
+                                <!-- Hapus Button -->
+                                <form action="{{ route('distribusi.destroy', ['distribusi' => $item->id]) }}" method="post"
+                                    onsubmit="return confirm('Are you sure you want to delete this item?');">
                                     @method('delete')
                                     @csrf
-                                    <button type="submit">
+                                    <button type="submit" class="">
                                         <i class="fas fa-trash mr-2"></i>
                                     </button>
                                 </form>
-                                <a href=""><i class="fa-solid fa-circle-info"></i></a>
                             </td>
                         </tr>
                     @endforeach

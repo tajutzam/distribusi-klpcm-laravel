@@ -2,11 +2,33 @@
 <html lang="en">
 
 <head>
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     @vite('resources/css/app.css')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
+        integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     <style>
+        details summary {
+            list-style: none;
+            /* Removes the default arrow */
+            cursor: pointer;
+            /* Ensure the cursor is a pointer */
+        }
+
+        details[open] summary::before {
+            content: none;
+            /* In case of custom arrow or icons, remove them */
+        }
+
         @media (max-width: 768px) {
             .nav-links {
                 display: none;
@@ -27,6 +49,7 @@
                 alt="Logo" class="h-14 w-14">
             <div class="hidden md:block text-white font-semibold">
                 <div class="text-lg">de-KLPCM</div>
+                <p>Puskesmas BWI</p>
             </div>
         </div>
 
@@ -38,27 +61,50 @@
         </button>
 
         <ul id="navLinks" class="nav-links hidden md:flex space-x-6 text-white">
-            <li><a href="{{ route('dashboard') }}"
-                    class="hover:underline {{ Request::is('dashboard') ? 'font-bold' : '' }} ">Dashboard</a></li>
-            <li><a href="{{ route('user.index') }}"
-                    class="hover:underline {{ Request::is('user') ? 'font-bold' : '' }}">Data User</a></li>
-            <li><a href="{{ route('rekam-medis.index') }}"
-                    class="hover:underline {{ Request::is('rekam-medis') ? 'font-bold' : '' }}">Distribusi Rekam
-                    medis</a></li>
-            <li><a href="{{ route('distribusi.index') }}"
+            <li>
+                <a href="{{ route('dashboard') }}"
+                    class="hover:underline {{ Request::is('dashboard') ? 'font-bold' : '' }} ">Dashboard</a>
+            </li>
+
+
+            @if (auth()->user()->role == 'admin')
+                <li>
+                    <a href="{{ route('user.index') }}"
+                        class="hover:underline {{ Request::is('user') ? 'font-bold' : '' }}">Data User</a>
+                </li>
+                <a href="{{ route('rekam-medis.index') }}"
                     class="hover:underline {{ Request::is('rekam-medis') ? 'font-bold' : '' }}">Data Distribusi Rekam
-                    medis</a></li>
-            <li><a href="{{ route('klpcm.index') }}"
-                    class="hover:underline {{ Request::is('klpcm') ? 'font-bold' : '' }}">Data KLPCM</a></li>
+                    medis</a>
+                <a href="{{ route('distribusi.index') }}"
+                    class="hover:underline {{ Request::is('distribusi') ? 'font-bold' : '' }}">Data KLPCM</a>
+            @endif
+
+            @if (auth()->user()->role == 'petugas')
+                <li>
+                    <a href="{{ route('distribusi.create') }}"
+                        class="hover:underline {{ Request::is('rekam-medis') ? 'font-bold' : '' }}">Distribusi Rekam
+                        medis</a>
+                </li>
+                <li>
+                    <a href="{{ route('distribusi.index') }}"
+                        class="hover:underline {{ Request::is('data/distribusi') ? 'font-bold' : '' }}">Data Distribusi
+                        Rekam
+                        medis</a>
+                </li>
+            @endif
+
             <li class="relative">
                 <details class="group">
                     <summary class="hover:underline cursor-pointer">Laporan</summary>
                     <ul class="absolute left-0 mt-2 w-40 bg-white text-black shadow-lg rounded-lg">
-                        <li class="p-2 hover:bg-gray-100"><a href="#">Laporan 1</a></li>
-                        <li class="p-2 hover:bg-gray-100"><a href="#">Laporan 2</a></li>
+                        <li class="p-2 hover:bg-gray-100"><a href="{{ route('rekam-medis.laporan') }}">Laporan
+                                Distribusi</a></li>
+                        <li class="p-2 hover:bg-gray-100"><a href="{{ route('data-distribusi.laporan') }}">Laporan
+                                Kelengkapan</a></li>
                     </ul>
                 </details>
             </li>
+
         </ul>
 
         <div class="hidden md:flex items-center space-x-4">
@@ -83,6 +129,40 @@
     <div class="flex-grow p-8">
         @yield('content')
     </div>
+
+    @include('sweetalert::alert')
+
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+
+    @if ($errors->any())
+        <script>
+            Swal.fire({
+                title: 'Validation Error!',
+                html: `
+                    <ul style="text-align: left;">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                `,
+                icon: "error",
+            });
+        </script>
+    @endif
+
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                title: 'Success!',
+                text: "{{ session('success') }}",
+                icon: "success",
+                confirmButtonText: 'OK'
+            });
+        </script>
+    @endif
 
     <script>
         document.getElementById('menuToggle').addEventListener('click', function() {

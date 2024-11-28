@@ -35,7 +35,7 @@ class UserController extends Controller
         $request->validate(
             [
                 'name' => 'required',
-                'nip' => 'required',
+                'nip' => 'required|digits:16',
                 'role' => 'required|in:admin,petugas,kepala',
                 'username' => 'required|unique:users,username',
                 'password' => 'required|confirmed'
