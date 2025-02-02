@@ -266,13 +266,13 @@
                                 <input type="radio" id="lengkap-no-rm" name="identifikasi" value="1"
                                     {{ old('identifikasi', $klpcm->identifikasi) == 1 ? 'checked' : '' }}
                                     class="appearance-none h-4 w-4 border border-gray-300 rounded-md checked:bg-blue-500 focus:outline-none">
-                                <label for="lengkap-no-rm" class="text-gray-700">Lengkap</label>
+                                <label for="lengkap-no-rm" class="text-gray-700">Benar</label>
                             </div>
                             <div class="flex items-center space-x-2">
                                 <input type="radio" id="tidak-lengkap-no-rm" name="identifikasi" value="0"
                                     {{ old('identifikasi', $klpcm->identifikasi) == 0 ? 'checked' : '' }}
                                     class="appearance-none h-4 w-4 border border-gray-300 rounded-md checked:bg-blue-500 focus:outline-none">
-                                <label for="tidak-lengkap-no-rm" class="text-gray-700">Tidak Lengkap</label>
+                                <label for="tidak-lengkap-no-rm" class="text-gray-700">Tidak Benar</label>
                             </div>
                         </div>
                     </div>
@@ -285,13 +285,13 @@
                                 <input type="radio" id="lengkap-nama" name="diagnosis" value="1"
                                     {{ old('diagnosis', $klpcm->diagnosis) == 1 ? 'checked' : '' }}
                                     class="appearance-none h-4 w-4 border border-gray-300 rounded-md checked:bg-blue-500 focus:outline-none">
-                                <label for="lengkap-nama" class="text-gray-700">Lengkap</label>
+                                <label for="lengkap-nama" class="text-gray-700">Benar</label>
                             </div>
                             <div class="flex items-center space-x-2">
                                 <input type="radio" id="tidak-lengkap-nama" name="diagnosis" value="0"
                                     {{ old('diagnosis', $klpcm->diagnosis) == 0 ? 'checked' : '' }}
                                     class="appearance-none h-4 w-4 border border-gray-300 rounded-md checked:bg-blue-500 focus:outline-none">
-                                <label for="tidak-lengkap-nama" class="text-gray-700">Tidak Lengkap</label>
+                                <label for="tidak-lengkap-nama" class="text-gray-700">Tidak Benar</label>
                             </div>
                         </div>
                     </div>
@@ -305,14 +305,14 @@
                                     value="1"
                                     {{ old('pembetulan_kesalahan', $klpcm->pembetulan_kesalahan) == 1 ? 'checked' : '' }}
                                     class="appearance-none h-4 w-4 border border-gray-300 rounded-md checked:bg-blue-500 focus:outline-none">
-                                <label for="lengkap-jenis-kelamin" class="text-gray-700">Lengkap</label>
+                                <label for="lengkap-jenis-kelamin" class="text-gray-700">Benar</label>
                             </div>
                             <div class="flex items-center space-x-2">
                                 <input type="radio" id="tidak-lengkap-jenis-kelamin" name="pembetulan_kesalahan"
                                     value="0"
                                     {{ old('pembetulan_kesalahan', $klpcm->pembetulan_kesalahan) == 0 ? 'checked' : '' }}
                                     class="appearance-none h-4 w-4 border border-gray-300 rounded-md checked:bg-blue-500 focus:outline-none">
-                                <label for="tidak-lengkap-jenis-kelamin" class="text-gray-700">Tidak Lengkap</label>
+                                <label for="tidak-lengkap-jenis-kelamin" class="text-gray-700">Tidak Benar</label>
                             </div>
                         </div>
                     </div>
@@ -351,7 +351,7 @@
 
             <div class="border border-black mt-3"></div>
 
-            <p class="text-md font-bold">Peminjam : {{ $klpcm->nama_string }}</p>
+            <p class="text-md font-bold">Peminjam : {{ $klpcm->nama_peminjam }}</p>
             <p class="text-md font-bold">Nomor Whatsapp : {{ $klpcm->no_wa }}</p>
 
             <p class="text-md font-bold">

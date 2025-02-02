@@ -1,9 +1,9 @@
 @extends('layouts.auth')
 
 @section('content')
-    <div class="bg-sky-300 bg-opacity-20 p-8 md:p-16 rounded-lg shadow-lg" style="width: 100vh">
-        <h2 class="text-2xl md:text-3xl font-bold mb-6 text-white text-center">Sistem Distribusi Elektronik dan Pengecekkan
-            Ketidaklengkapan Pengisian Catatan Medis di Puskesmas Bukit Wolio Indah </h2>
+    <div class="bg-sky-300 bg-opacity-50 p-8 md:p-16 rounded-lg shadow-lg" style="width: 100vh">
+        <h2 class="text-2xl md:text-3xl font-bold mb-6 text-black text-center">Sistem Distribusi Elektronik dan Pengecekkan
+            Kelengkapan Pengisian Catatan Medis di Puskesmas Bukit Wolio Indah </h2>
         <x-alert />
         <div class="bg-[#90c0e7] p-6 rounded-lg shadow-lg">
             <form method="POST" action="{{ route('login') }}">

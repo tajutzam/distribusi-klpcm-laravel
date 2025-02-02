@@ -53,17 +53,21 @@
                                         <p class="text-md font-bold">Nama : {{ $item->nama_string }}</p>
                                         <p class="text-md font-bold">Poli : {{ $item->poli }}</p>
 
-                                        <div class="flex gap-4 mt-2">
-                                            <form class="inline"
-                                                action="{{ route('data-distribusi.update.status.kembali', ['id' => $item->id]) }}"
-                                                method="post">
-                                                @csrf
-                                                @method('put')
-                                                <input type="text" hidden name="status" value="kembali">
-                                                <button class="bg-green-600 px-5 py-2 rounded text-white"
-                                                    type="submit">Kembali</button>
-                                            </form>
-                                            <form class="inline"
+                                        @if ($item->status_kembali == 'kembali')
+                                            <button class="bg-red-500 px-5 py-2 rounded text-white closeButton"
+                                                data-modal-id="{{ $item->id }}">Close</button>
+                                        @else
+                                            <div class="flex gap-4 mt-2">
+                                                <form class="inline"
+                                                    action="{{ route('data-distribusi.update.status.kembali', ['id' => $item->id]) }}"
+                                                    method="post">
+                                                    @csrf
+                                                    @method('put')
+                                                    <input type="text" hidden name="status" value="kembali">
+                                                    <button class="bg-green-600 px-5 py-2 rounded text-white"
+                                                        type="submit">Kembali</button>
+                                                </form>
+                                                <form class="inline"
                                                 action="{{ route('data-distribusi.update.status.kembali', ['id' => $item->id]) }}"
                                                 method="post">
                                                 @csrf
@@ -72,7 +76,9 @@
                                                 <button type="submit" class="bg-red-600 px-5 py-2 rounded text-white">Belum
                                                     Kembali</button>
                                             </form>
-                                        </div>
+                                            </div>
+                                        @endif
+
                                         @if ($item->status_kembali != 'kembali')
                                             <div class="border border-black mt-3">
                                             </div>

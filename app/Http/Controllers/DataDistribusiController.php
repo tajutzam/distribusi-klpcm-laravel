@@ -17,7 +17,7 @@ class DataDistribusiController extends Controller
     {
 
         if (Auth::user()->role == 'petugas') {
-            $klpcms = KlpcmDetail::with('klpcm')->where('tanggal_pinjam', Carbon::now()->toDateString())->paginate(10);
+            $klpcms = KlpcmDetail::with('klpcm')->where('tanggal_pinjam', Carbon::now()->toDateString())->where('status_lengkap', '<>', 'lengkap')->paginate(10);
         } else {
             $klpcms = KlpcmDetail::with('klpcm')->paginate(10);
         }
@@ -179,7 +179,7 @@ class DataDistribusiController extends Controller
             $pesan = sprintf(
                 'Sistem Distribusi Rekam Medis dan KLPCM Puskesmas BWI Kota Baubau Rekam medis %s atas nama %s tujuan poli %s %s. Segera lengkapi %s pada rekam medis pasien.',
                 $detail->klpcm->no_rm,
-                $detail->nama_peminjam,
+                $detail->nama_string,
                 'Umum', // Poli, bisa diubah sesuai kebutuhan
                 'BELUM LENGKAP', // Status
                 $missingFieldsList

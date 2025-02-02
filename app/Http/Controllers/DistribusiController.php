@@ -30,7 +30,7 @@ class DistribusiController extends Controller
     {
         $validated = $request->validate(
             [
-                'no_rm' => 'required',
+                'no_rm' => 'required|exists:data_pasien,no_rm',
                 'kode_wilayah' => 'required',
                 'nama_string' => 'required',
                 'keperluan' => 'required',
@@ -39,8 +39,12 @@ class DistribusiController extends Controller
                 'tanggal_pinjam' => 'required|date',
                 'tanggal_kembali' => 'required|date|same:tanggal_pinjam',
                 'no_wa' => 'required|max:15, min:11'
+            ],
+            [
+                'no_rm.exists' => 'No rm belum di input ke data pasien!'
             ]
         );
+
 
         $klpcm = Klpcm::updateOrCreate([
             'no_rm' => $request->no_rm,
