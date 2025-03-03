@@ -4,23 +4,8 @@
     <div class="container mx-auto p-4">
         <x-alert />
 
-        <!-- Search & Sort -->
-        <div class="flex justify-between items-center mb-4">
-            <input type="text" id="searchInput" placeholder="Cari..." class="border p-2 rounded-md">
-
-            <select id="sortSelect" class="border p-2 rounded-md" onchange="sortData()">
-                <option value="tanggal_pinjam" {{ request('sort') == 'tanggal_pinjam' ? 'selected' : '' }}>Tanggal Pinjam
-                </option>
-                <option value="status_lengkap" {{ request('sort') == 'status_lengkap' ? 'selected' : '' }}>Status KLPCM
-                </option>
-                <option value="poli" {{ request('sort') == 'poli' ? 'selected' : '' }}>Poli</option>
-                <option value="kode_wilayah" {{ request('sort') == 'kode_wilayah' ? 'selected' : '' }}>Kode Wilayah</option>
-            </select>
-
-        </div>
-
         <div class="container overflow-x-auto">
-            <table class="w-full border-collapse border rounded-md shadow-md">
+            <table id="myTable" class="w-full border-collapse border rounded-md shadow-md">
                 <thead>
                     <tr class="bg-gray-600 text-left font-medium text-white">
                         <th class="px-4 py-2">No</th>
@@ -88,20 +73,15 @@
                 document.getElementById(`modal${id}`).classList.add('hidden');
             });
         });
-
-        document.getElementById('searchInput').addEventListener('keyup', function() {
-            let searchText = this.value.toLowerCase();
-            let rows = document.querySelectorAll('#tableBody tr');
-
-            rows.forEach(row => {
-                let text = row.innerText.toLowerCase();
-                row.style.display = text.includes(searchText) ? '' : 'none';
-            });
-        });
-
-        document.getElementById('sortSelect').addEventListener('change', function() {
-            let column = this.value;
-            window.location.href = `?sort=${column}`;
-        });
     </script>
+
+@section('scripts')
+    <script>
+        let table = new DataTable('#myTable', {
+            responsive: true
+        });
+        console.log(table)
+    </script>
+@endsection
+
 @endsection

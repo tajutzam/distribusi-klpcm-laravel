@@ -84,9 +84,13 @@
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="input6">
                             Nama Peminjam <span class="text-red-500">*</span>
                         </label>
-                        <input name="nama_peminjam"
+                        <input name="nama_peminjam" hidden
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             id="nama_peminjam" type="text" value="{{ old('nama_peminjam') }}" placeholder="Enter text">
+                        <select id="select-perawat"
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                            <option value="">Pilih Perawat</option>
+                        </select>
                     </div>
                 </div>
                 <div class="mb-4 w-full">
@@ -97,10 +101,7 @@
                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         id="no_wa" type="text" value="{{ old('no_wa') }}" placeholder="Enter text">
                 </div>
-
             </div>
-
-
             @php
                 use Carbon\Carbon;
                 $today = Carbon::now()->toDateString();
@@ -158,7 +159,7 @@
         document.getElementById('poly-selected').addEventListener('change', async function() {
             try {
                 const response = await fetch("/poly/search", {
-                    method: "POST", // Pastikan metode HTTP benar
+                    method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                         "X-CSRF-TOKEN": csrfToken
@@ -173,50 +174,43 @@
                 }
 
                 const data = await response.json();
-                const container = document.getElementById('perawat-container'); // Tempat untuk select perawat
-                container.innerHTML = ""; // Kosongkan elemen sebelumnya
+                const selectPerawat = document.getElementById('select-perawat');
+                selectPerawat.innerHTML = '<option value="">Pilih Perawat</option>'; // Reset dropdown
 
                 if (data.data.length === 0) {
                     alert('Belum ada perawat untuk poli ' + this.value);
                     document.getElementById('no_wa').value = "";
                     document.getElementById('nama_peminjam').value = "";
-                } else if (data.data.length === 1) {
-                    // Jika hanya ada satu perawat, langsung isi input
-                    document.getElementById('no_wa').value = data.data[0].no_wa;
-                    document.getElementById('nama_peminjam').value = data.data[0].name;
                 } else {
-                    // Jika lebih dari satu, buat dropdown select
-                    const select = document.createElement('select');
-                    select.id = "select-perawat";
-                    select.className =
-                        "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-3";
-
-                    // Tambahkan opsi perawat ke dalam select
                     data.data.forEach(perawat => {
                         const option = document.createElement('option');
-                        option.value = perawat.no_wa; // Gunakan no_wa sebagai nilai
+                        option.value = perawat.no_wa; // Simpan no_wa sebagai value
                         option.textContent = perawat.name;
-                        select.appendChild(option);
+                        selectPerawat.appendChild(option);
                     });
 
-                    // Tambahkan select ke dalam container
-                    container.appendChild(select);
+                    // Auto pilih perawat pertama jika ada lebih dari satu
+                    if (data.data.length > 0) {
+                        selectPerawat.value = data.data[0].no_wa;
+                        document.getElementById('no_wa').value = data.data[0].no_wa;
+                        document.getElementById('nama_peminjam').value = data.data[0].name;
+                    }
+                }
 
-                    // Set default nilai input dari perawat pertama
-                    document.getElementById('no_wa').value = data.data[0].no_wa;
-                    document.getElementById('nama_peminjam').value = data.data[0].name;
-
-                    // Tambahkan event listener jika select berubah
-                    select.addEventListener('change', function() {
-                        const selectedPerawat = data.data.find(p => p.no_wa === this.value);
+                // Event listener untuk mengubah data saat perawat dipilih
+                selectPerawat.addEventListener('change', function() {
+                    const selectedPerawat = data.data.find(p => p.no_wa === this.value);
+                    if (selectedPerawat) {
                         document.getElementById('no_wa').value = selectedPerawat.no_wa;
                         document.getElementById('nama_peminjam').value = selectedPerawat.name;
-                    });
-                }
+                    }
+                });
+
             } catch (error) {
                 console.error("Fetch error:", error);
             }
         });
+
 
 
 
