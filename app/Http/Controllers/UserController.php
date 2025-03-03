@@ -70,7 +70,6 @@ class UserController extends Controller
         $request->validate([
             'nip' => 'required',
             'name' => 'required',
-            'role' => 'required',
             'username' => 'required',
             'password' => 'sometimes|nullable|confirmed|min:8',
         ]);
@@ -78,7 +77,6 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $user->nip = $request->nip;
         $user->name = $request->name;
-        $user->role = $request->role;
         $user->username = $request->username;
 
         if ($request->filled('password')) {
