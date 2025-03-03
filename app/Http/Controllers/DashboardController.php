@@ -11,7 +11,9 @@ class DashboardController extends Controller
     //
     public function index(Request $request)
     {
-    
+        $bulan = Carbon::now()->month;
+        $tahun = Carbon::now()->year;
+
         $poliList = ['Poli Umum', 'Poli Gigi', "Poli KIA/KB", "Poli MTBS"];
 
         // Data Distribusi per Poli
@@ -21,6 +23,7 @@ class DashboardController extends Controller
                 DB::raw('SUM(CASE WHEN tanggal_dikembalikan <= tanggal_kembali THEN 1 ELSE 0 END) as tepat_waktu'),
                 DB::raw('SUM(CASE WHEN IFNULL(tanggal_dikembalikan, NOW()) > tanggal_kembali THEN 1 ELSE 0 END) as terlambat')
             )
+           
             ->groupBy('poli')
             ->get()
             ->keyBy('poli');
