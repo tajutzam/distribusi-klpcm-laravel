@@ -6,7 +6,7 @@
         <div class="bg-white rounded-md p-4 shadow-md w-full">
             <form action="{{ route('data-distribusi.laporan-pdf') }}" method="post">
                 @csrf
-                <div class="flex gap-4">
+                <div class="flex gap-4 items-center">
                     <div class="mb-4" style="width: 200px;">
                         <label for="bulan" class="block text-sm font-medium text-gray-700">Bulan</label>
                         <select id="bulan" name="bulan" required
@@ -46,24 +46,24 @@
                             <option value="2030">2030</option>
                         </select>
                     </div>
+                    <div class="flex gap-4 justify-between w-full">
+                        <!-- Kirim Button -->
+                        <div>
+                            <button type="submit" formaction="{{ url()->current() }}" formmethod="get"
+                                class="bg-[#4d869c] text-white px-4 py-2 rounded-md">
+                                Tampil
+                            </button>
+                        </div>
+
+                        <!-- PDF Button -->
+                        <div>
+                            <button type="submit" class="bg-[#4d869c] text-white px-4 py-2 rounded-md">
+                                PDF
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 <!-- Buttons -->
-                <div class="flex gap-4 justify-end">
-                    <!-- Kirim Button -->
-                    <div>
-                        <button type="submit" formaction="{{ url()->current() }}" formmethod="get"
-                            class="bg-[#4d869c] text-white px-4 py-2 rounded-md">
-                            Tampil
-                        </button>
-                    </div>
-
-                    <!-- PDF Button -->
-                    <div>
-                        <button type="submit" class="bg-[#4d869c] text-white px-4 py-2 rounded-md">
-                            PDF
-                        </button>
-                    </div>
-                </div>
             </form>
         </div>
 
