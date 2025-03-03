@@ -6,7 +6,7 @@
         <div class="bg-white rounded-md p-4 w-full shadow-md">
             <form action="{{ route('rekam-medis.laporan.pdf', ['id' => 1]) }}" method="post">
                 @csrf
-                <div class="flex gap-6">
+                <div class="flex gap-6 items-center">
                     <!-- Input Bulan -->
                     <div class="mb-4 " style="width: 400px">
                         <label for="bulan" class="block text-sm font-medium text-gray-700">Bulan</label>
@@ -36,28 +36,32 @@
                             <option value="">Pilih Tahun</option>
                             <!-- Tahun Options -->
                             @for ($i = 2020; $i <= 2030; $i++)
-                                <option value="{{ $i }}">{{ $i }}</option>
+                                <option value="{{ $i }}">
+                                    Tahun {{ $i }}
+                                </option>
                             @endfor
                         </select>
                     </div>
+
+                    <div class="flex gap-4 justify-between w-full">
+                        <div>
+                            <button type="submit" formaction="{{ url()->current() }}" formmethod="get"
+                                class="bg-[#4d869c] text-white px-4 py-2 rounded-md">
+                                Tampil
+                            </button>
+                        </div>
+
+                        <!-- PDF Button -->
+                        <div>
+                            <button type="submit" class="bg-[#4d869c] text-white px-4 py-2 rounded-md">
+                                PDF
+                            </button>
+                        </div>
+                    </div>
+
                 </div>
 
                 <!-- Buttons -->
-                <div class="flex gap-4 justify-end">
-                    <div>
-                        <button type="submit" formaction="{{ url()->current() }}" formmethod="get"
-                            class="bg-[#4d869c] text-white px-4 py-2 rounded-md">
-                            Tampil
-                        </button>
-                    </div>
-
-                    <!-- PDF Button -->
-                    <div>
-                        <button type="submit" class="bg-[#4d869c] text-white px-4 py-2 rounded-md">
-                            PDF
-                        </button>
-                    </div>
-                </div>
             </form>
 
         </div>

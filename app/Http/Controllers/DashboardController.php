@@ -16,14 +16,14 @@ class DashboardController extends Controller
 
         $poliList = ['Poli Umum', 'Poli Gigi', "Poli KIA/KB", "Poli MTBS"];
 
-        // Data Distribusi per Poli
         $distribusiPerPoli = DB::table('klpcm_detail')
             ->select(
                 'poli',
                 DB::raw('SUM(CASE WHEN tanggal_dikembalikan <= tanggal_kembali THEN 1 ELSE 0 END) as tepat_waktu'),
                 DB::raw('SUM(CASE WHEN IFNULL(tanggal_dikembalikan, NOW()) > tanggal_kembali THEN 1 ELSE 0 END) as terlambat')
             )
-           
+            ->whereMonth('tanggal_pinjam', $bulan)
+            ->whereYear('tanggal_pinjam', $tahun)
             ->groupBy('poli')
             ->get()
             ->keyBy('poli');
@@ -50,9 +50,8 @@ class DashboardController extends Controller
             ->whereYear('tanggal_pinjam', $tahun)
             ->groupBy('poli')
             ->get()
-            ->keyBy('poli'); // Buat indeks berdasarkan nama poli
+            ->keyBy('poli');
 
-        // Pastikan semua poli ada dalam hasil
         foreach ($poliList as $poli) {
             if (!isset($kelengkapanPerPoli[$poli])) {
                 $kelengkapanPerPoli[$poli] = (object) [
