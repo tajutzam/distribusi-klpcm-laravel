@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::table('klpcm_detail', function (Blueprint $table) {
             //
             $table->boolean('perawatan_gigi')->nullable();
-            $table->boolean('nformed_consent_penting')->nullable();
+            $table->boolean('informed_consent_penting')->nullable();
             $table->boolean('informed_consent_autentikasi')->nullable();
         });
     }

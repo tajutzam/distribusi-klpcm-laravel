@@ -11,10 +11,7 @@ class DashboardController extends Controller
     //
     public function index(Request $request)
     {
-        $bulan = Carbon::now()->month;
-        $tahun = Carbon::now()->year;
-
-        // Daftar Poli yang harus selalu tampil
+    
         $poliList = ['Poli Umum', 'Poli Gigi', "Poli KIA/KB", "Poli MTBS"];
 
         // Data Distribusi per Poli
@@ -24,13 +21,10 @@ class DashboardController extends Controller
                 DB::raw('SUM(CASE WHEN tanggal_dikembalikan <= tanggal_kembali THEN 1 ELSE 0 END) as tepat_waktu'),
                 DB::raw('SUM(CASE WHEN IFNULL(tanggal_dikembalikan, NOW()) > tanggal_kembali THEN 1 ELSE 0 END) as terlambat')
             )
-            ->whereMonth('tanggal_pinjam', $bulan)
-            ->whereYear('tanggal_pinjam', $tahun)
             ->groupBy('poli')
             ->get()
-            ->keyBy('poli'); // Buat indeks berdasarkan nama poli
+            ->keyBy('poli');
 
-        // Pastikan semua poli ada dalam hasil
         foreach ($poliList as $poli) {
             if (!isset($distribusiPerPoli[$poli])) {
                 $distribusiPerPoli[$poli] = (object) [
