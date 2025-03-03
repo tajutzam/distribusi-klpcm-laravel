@@ -45,12 +45,14 @@
                             <td class="px-4 py-2 flex gap-2">
                                 <a href="{{ route('user.edit', ['user' => $item->id]) }}"
                                     class="bg-[#4d869c] hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Edit</a>
-                                <form action="{{ route('user.destroy', ['user' => $item->id]) }}" method="post">
-                                    @method('delete')
-                                    @csrf
-                                    <button type="submit"
-                                        class="bg-[#4d869c] hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Hapus</button>
-                                </form>
+                                @if ($item->role != 'admin')
+                                    <form action="{{ route('user.destroy', ['user' => $item->id]) }}" method="post">
+                                        @method('delete')
+                                        @csrf
+                                        <button type="submit"
+                                            class="bg-[#4d869c] hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Hapus</button>
+                                    </form>
+                                @endif
                             </td>
                         </tr>
                     @endforeach
